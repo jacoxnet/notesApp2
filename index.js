@@ -1,19 +1,21 @@
-// save a note in localstorage
-function saveNote() {
-    newNote = document.querySelector("#note");
-    // don't allow blank note
-    if (newNote.value == "") {
-        alert("Please enter some text");
-        return;
+function getNoteId() {
+    let noteObject = getExistingNotes();
+    if (!noteobject) {
+        return 1;
     }
-    let allNotes = getAllNotes();
-    // add next note to list
-    allNotes[allNotes.length] = newNote.value;
-    // store back in localstorage
-    localStorage.setItem('notes', JSON.stringify(allNotes));
-    alert("Note saved");
+    const keysArray = Object.keys(noteObject);
+    const numberKeys = keysArray.map((key) => Number(key));
+    console.log(numberKeys);
+    return Math.max(...numberKeys) + 1;
 }
 
+function getExistingNotes() {
+    let notes = localStorage.getItem('notes');
+    if (!notes) {
+        return null;
+    }
+    return JSON.parse(notes);
+}
 // read a list of all notes from local storage and return it
 function getAllNotes() {
     let allNotes = JSON.parse(localStorage.getItem('notes'));
@@ -21,20 +23,4 @@ function getAllNotes() {
         allNotes = [];
     }
     return allNotes; 
-}
-
-// store all notes back in localstorage
-function storeNotes(allNotes) {
-    localStorage.setItem('notes', JSON.stringify(allNotes));
-}
-
-// display notes by insertion in DOM element id "notes-list"
-function displayNotes() {
-    let allNotes = getAllNotes();
-    notesList = document.querySelector("#notes-list");
-    allNotes.forEach(note => {
-        let listItem = document.createElement('li');
-        listItem.innerHTML = note;
-        notesList.appendChild(listItem);
-    });
 }
