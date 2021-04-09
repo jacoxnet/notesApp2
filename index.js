@@ -1,6 +1,6 @@
 function getNoteId() {
     let noteObject = getExistingNotes();
-    if (!noteobject) {
+    if (!noteObject) {
         return 1;
     }
     const keysArray = Object.keys(noteObject);
